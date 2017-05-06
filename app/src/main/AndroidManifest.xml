@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="jid.quitedroid"> <!-- > Permission to Read/Write Google Calendar < -->
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="23" />
+
+    <!-- > Permission for Sending Rejection Messages < -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
+    <!-- > Permissions for Denying Incoming Calls < -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <!-- > Permission for changing phone's sound state (Normal, Vibrate, Silent) < -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
+    <!-- > Permission for Boot receiving < -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".ContextHandler"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <service android:name=".Services.ModeService" />
+        <service android:name=".Services.BackgroundService"/>
+
+        <!-- > >>>>>>> origin/Notifications_and_Services< -->
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Settings Activity Page -->
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/app_name" />
+
+        <!-- > Call the OnReceive activity in the CallHandler class when the state of the phone changes e.g. Incoming Call < -->
+        <receiver android:name=".CallHandler">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- New reciever @ 15/6/2016 -->
+        <receiver android:name=".Receivers.CalendarProcessor">
+            <intent-filter android:priority="9999">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+
+                <data android:scheme="package" />
+
+                <action android:name="android.intent.action.PROVIDER_CHANGED" />
+
+                <data android:scheme="content" />
+                <data android:host="com.android.calendar" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".Receivers.SetModeReceiver" />
+
+        <!-- Associated with Quite Droid Widget -->
+        <receiver android:name=".ModeWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.WIDGET_NORMAL_BUTTON" />
+                <action android:name="android.appwidget.action.WIDGET_FORMAL_BUTTON" />
+                <action android:name="android.appwidget.action.WIDGET_BLOCKING_BUTTON" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/mode_widget_info" />
+        </receiver>
+
+        <activity
+            android:name=".SettingsFeaturesActivity"
+            android:label="@string/title_activity_settings_features"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="jid.quitedroid.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>
