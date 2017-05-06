@@ -1,0 +1,2 @@
+# QuietDroid
+QuietDroid was developed for the final year project, which keeps the user's phone quiet during formal situations such as lectures, meetings, interviews and others. It works by fetching the user's calendar events, detecting keywords, determining event priority and scheduling silence events at a later time. This project was awarded an A grade.  "Forgot to set your phone on silent? Worry no more with QuietDroid!"  http://bit.ly/2mVh
